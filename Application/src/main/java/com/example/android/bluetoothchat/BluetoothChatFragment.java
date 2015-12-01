@@ -128,7 +128,7 @@ public class BluetoothChatFragment extends Fragment {
         if (textView != null) {
             textView.setText(
                                 "speed: "+ Double.toString(speed) + "\n" +
-                                "angle: "+ Double.toString(angle));
+                                "angle: "+ String.format("%.2f",angle));
         }
         sendMessage(MessageType.VELOCITY_AND_ANGLE,speed,angle);
     }

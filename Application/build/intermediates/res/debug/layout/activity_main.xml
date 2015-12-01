@@ -14,18 +14,20 @@
   limitations under the License.
   -->
 <LinearLayout
-      xmlns:android="http://schemas.android.com/apk/res/android"
-      android:orientation="vertical"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:id="@+id/sample_main_layout">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/sample_main_layout"
+    android:background="#88008888">
 
+    <!--
     <SeekBar
         android:id="@+id/slider"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:max="1000"
-        />
+        />-->
 
     <TextView
         android:id="@+id/tv"
@@ -49,6 +51,7 @@
         android:orientation="horizontal">
 
     <Button
+        android:background="#ff0000"
         android:id="@+id/btnBreak"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -58,6 +61,7 @@
 
 
     <Button
+        android:background="#00ff00"
         android:id="@+id/btnAccelerate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

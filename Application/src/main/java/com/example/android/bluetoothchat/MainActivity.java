@@ -81,9 +81,9 @@ public class MainActivity extends SampleActivityBase
         }
 
         textView = (TextView) findViewById(R.id.tv);
-        seekBar = (SeekBar) findViewById(R.id.slider);
+        //seekBar = (SeekBar) findViewById(R.id.slider);
 
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        /*seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 //textView.setText(Integer.toString(progress));
@@ -97,7 +97,7 @@ public class MainActivity extends SampleActivityBase
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
-        });
+        });*/
 
         sm = (SensorManager) getSystemService(SENSOR_SERVICE);
         sensorAcc = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -142,7 +142,7 @@ public class MainActivity extends SampleActivityBase
                         if (btnAccelerate.isPressed()){
                             speed += 1;
                         }
-                        textView.setText(Double.toString(speed));
+                        //textView.setText(Double.toString(speed));
                         sendToFragment(speed,angle);
                     }
                 });
