@@ -87,9 +87,11 @@ public class BluetoothChatFragment extends Fragment {
     private TextView textView;
     double speed, angle;
 
+    byte sensorLineValues[];
+
     enum MessageType {
         VELOCITY_AND_ANGLE(0),
-        ANGLE(1);
+        LINE_SENSOR(1);
         private final byte id;
         MessageType(int id) {
             this.id = (byte) id;
@@ -114,6 +116,11 @@ public class BluetoothChatFragment extends Fragment {
         }
 
         textView = (TextView)getActivity().findViewById(R.id.tv2);
+
+        sensorLineValues = new byte[32];
+        for (int i=0;i<32;i++){
+            sensorLineValues[i]= (byte)(255/32*i);
+        }
     }
 
     public interface ActivityToFragment {
@@ -128,7 +135,8 @@ public class BluetoothChatFragment extends Fragment {
         if (textView != null) {
             textView.setText(
                                 "speed: "+ Double.toString(speed) + "\n" +
-                                "angle: "+ String.format("%.2f",angle));
+                                "angle: "+ String.format("%.2f",angle) + "\n" +
+                                "[0]: " + sensorLineValues[0]);
         }
         sendMessage(MessageType.VELOCITY_AND_ANGLE,speed,angle);
     }
@@ -229,16 +237,28 @@ public class BluetoothChatFragment extends Fragment {
             return;
         }
 
-        byte[] byteArrayVelocity = new byte[8];
-        ByteBuffer.wrap(byteArrayVelocity).putDouble(velocity);
-        byte[] messageTypeByteArray = new byte[1];
-        messageTypeByteArray[0] = MessageType.VELOCITY_AND_ANGLE.getId();
-        mChatService.write(messageTypeByteArray);
-        mChatService.write(byteArrayVelocity);
+        if(type==MessageType.VELOCITY_AND_ANGLE) {
+            byte[] messageTypeByteArray = new byte[1];
+            messageTypeByteArray[0] = MessageType.VELOCITY_AND_ANGLE.getId();
+            mChatService.write(messageTypeByteArray);
 
-        byte[] byteArrayAngle = new byte[8];
-        ByteBuffer.wrap(byteArrayAngle).putDouble(angle);
-        mChatService.write(byteArrayAngle);
+            byte[] byteArrayVelocity = new byte[8];
+            ByteBuffer.wrap(byteArrayVelocity).putDouble(velocity);
+            mChatService.write(byteArrayVelocity);
+
+            byte[] byteArrayAngle = new byte[8];
+            ByteBuffer.wrap(byteArrayAngle).putDouble(angle);
+            mChatService.write(byteArrayAngle);
+
+            messageTypeByteArray[0] = MessageType.LINE_SENSOR.getId();
+            mChatService.write(messageTypeByteArray);
+
+            for(int i=0;i<32;i++){
+                sensorLineValues[i]+=10;
+                if(sensorLineValues[i]>255) sensorLineValues[i]=0;
+            }
+            mChatService.write(sensorLineValues);
+        }
 
         // Reset out string buffer to zero and clear the edit text field
         mOutStringBuffer.setLength(0);
